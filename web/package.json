@@ -1,0 +1,29 @@
+{
+  "name": "pumbaa-kpt",
+  "version": "1.0.0",
+  "description": "Node.js program to integrate with Ollama and expose a web service for communication.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-repo/ollama-integration.git"
+  },
+  "keywords": [
+    "ollama",
+    "nodejs",
+    "express",
+    "ai",
+    "integration"
+  ],
+  "author": "Pumbaa",
+  "license": "GNU GPL v3"
+}
