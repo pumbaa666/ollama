@@ -1,59 +1,60 @@
-const { spawn } = require('child_process');
 const express = require('express');
+const { spawn } = require('child_process');
+
+//let ollamaProcess;
+
 const app = express();
 app.use(express.json());
 
-let ollamaProcess;
+const PORT = 3000;
+const ollamaCommand = 'ollama';
+const ollamaArgs = ['run', 'llama3.2'];
 
-// Start Ollama subprocess
-function startOllama() {
-    console.log("starting Ollama model")
-    ollamaProcess = spawn('ollama', ['run', 'llama3.2'], { stdio: ['pipe', 'pipe', 'inherit'] });
+const GET_MESSAGE_ENDPOINT =  '/api/message';
 
-    // Log Ollama output
+app.post(GET_MESSAGE_ENDPOINT, (req, res) => {
+    console.log("request received on " + GET_MESSAGE_ENDPOINT)
+    const { message } = req.body;
+
+    if (!message) {
+        return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const ollamaProcess = spawn(ollamaCommand, ollamaArgs);
+
+    let output = '';
+    let errorOutput = '';
+
+    // Send the message to the Ollama process
+    ollamaProcess.stdin.write(`${message}\n`);
+    ollamaProcess.stdin.end();
+
+    // Capture standard output
     ollamaProcess.stdout.on('data', (data) => {
-        console.log(`[Ollama]: ${data}`);
+        output += data.toString();
     });
 
-    // Handle Ollama termination
-    ollamaProcess.on('close', (code) => {
-        console.log(`Ollama recieved a termination code : ${code}`);
-        cleanExit();
+    // Capture standard error
+    ollamaProcess.stderr.on('data', (data) => {
+        errorOutput += data.toString();
     });
-}
+
+    // Handle process completion
+    ollamaProcess.on('close', (code) => {
+        if (code === 0) {
+            res.json({ response: output.trim() });
+        } else {
+            res.status(500).json({ error: `Ollama process failed with code ${code}`, details: errorOutput.trim() });
+        }
+    });
+});
 
 function cleanExit(exitCode) {
     console.log(`Ollama exited with code ${exitCode}`);
     // TODO futurs cleanup
 }
 
-function sendMessageToOllama(message) {
-    if (!ollamaProcess) {
-        throw new Error('Ollama is not running.');
-    }
-
-    console.log("sending message to ollama : " + message)
-    ollamaProcess.stdin.write(`${message}\n`);
-}
-
-// Endpoint to send messages to Ollama
-app.post('/api/message', (req, res) => {
-    console.log("request received on /api/message")
-    const { message } = req.body;
-    if (!message) {
-        return res.status(400).json({ error: 'Message is required' });
-    }
-
-    sendMessageToOllama(message);
-
-    // Simulate asynchronous response (you can modify this to buffer and return actual responses)
-    setTimeout(() => {
-        res.json({ response: `Ollama processed: "${message}"` });
-    }, 1000);
-});
-
 // Start the server
-app.listen(3000, () => {
-    startOllama();
+app.listen(PORT, () => {
     console.log('Server is running on http://localhost:3000');
 });
