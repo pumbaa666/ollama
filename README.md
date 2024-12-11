@@ -1,5 +1,10 @@
 # ollama
 
+## Documentation
+https://ollama.com
+https://ollama.com/library/llama3.2
+https://github.com/ollama/ollama/blob/main/docs/modelfile.md
+
 ## Bootstart
 ```
 # Download and install Ollama
