@@ -1,5 +1,5 @@
 curl -X POST http://localhost:3000/api/message \
      -H "Content-Type: application/json" \
-     -d '{"message": "Hello, Ollama!"}'
+     -d '{"message": "Hello, PumbaaKPT!"}'
      
-curl -X POST http://localhost:3000/api/message -H "Content-Type: application/json" -d '{"message": "Hello, Ollama!"}'
+curl -X POST http://localhost:3000/api/message -H "Content-Type: application/json" -d '{"message": "Hello, PumbaaKPT!"}'

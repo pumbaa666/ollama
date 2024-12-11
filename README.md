@@ -33,3 +33,9 @@ Save the result (except the License) into a file named llama3.2-modelfile
 Create a shortcut : `sudo ollama create raccourci -f llama3.2-modelfile`
 Run the model : `ollama run llama3.2`
 Run the shortcut : `ollama run raccourci`
+
+
+## Docker
+Build from Dockerfile `docker build -t pumbaa-kpt-app .`
+Run the container : `docker run -p 3000:3000 -d pumbaa-kpt-app`
+Test the container is running : `curl -X POST http://localhost:3000/api/message -H "Content-Type: application/json" -d '{"message": "Hello, PumbaaKPT!"}'`

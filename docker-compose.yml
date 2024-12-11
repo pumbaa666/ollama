@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  node-ollama-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-service
+    volumes:
+      - ollama-data:/var/lib/ollama
+    restart: unless-stopped
+
+volumes:
+  ollama-data:
+    driver: local
