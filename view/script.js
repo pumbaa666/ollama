@@ -2,11 +2,13 @@ document.getElementById('messageForm').addEventListener('submit', async function
   event.preventDefault();
 
   const message = document.getElementById('messageInput').value;
-  console.log("--------------------");
+  console.log("\n--------------------");
   console.log("received : "+message);
 
   const responseBox = document.getElementById('responseBox');
-  
+  const time1 = new Date();
+  responseBox.innerHTML += `<div class="message user-message"><b>Vous</b> <i>(${time1.toLocaleTimeString()})</i><br />${message}</div>`;
+
   let data;
   try {
     const response = await fetch('/api/message', {
@@ -24,6 +26,10 @@ document.getElementById('messageForm').addEventListener('submit', async function
     console.error("Error: " + data);
   }
   
-  responseBox.textContent = data;
+  const time2 = new Date();
+  const lag = time2 - time1;
+  console.log("lag : " + lag + " ms");
+  responseBox.innerHTML += `<div class="message ia-message"><b>Pumbaa-KPT</b> <i>(${time2.toLocaleTimeString()}, ${lag}ms)</i><br />${data}</div>`;
+
   responseBox.style.display = "block";
 });
