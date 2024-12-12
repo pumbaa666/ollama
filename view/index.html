@@ -11,14 +11,22 @@
 <body>
   <h1>Pumbaa-KPT</h1>
   
-  <form id="messageForm">
-    <input type="text" id="messageInput" placeholder="Enter your message" required />
-    <button type="submit">Send</button>
-  </form>
+  <div id="menu" style="width: 200px; float: left; margin-right: 20px;">
+    <h3>Available Models</h3>
+    <ul id="modelsList"></ul>
+  </div>
   
-  <div id="responseBox" class="response" style="display: none; max-height: 600px; overflow-y: auto;"></div>
+  <div id="content" style="margin-left: 220px;">
+    <form id="messageForm">
+      <input type="text" id="messageInput" placeholder="Enter your message" required />
+      <button type="submit">Send</button>
+    </form>
+    
+    <div id="responseBox" class="response" style="display: none; max-height: 600px; overflow-y: auto;"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
+
 
 </html>

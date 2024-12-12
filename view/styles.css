@@ -2,44 +2,118 @@ body {
   font-family: Arial, sans-serif;
   margin: 20px;
   max-width: 600px;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9; /* Soft background */
+  color: #333; /* Standard text color */
+  line-height: 1.6;
 }
 
 h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #007BFF; /* Highlighted color */
   text-align: center;
-  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 form {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  gap: 10px; /* Spacing between input and button */
+  margin-bottom: 20px;
 }
 
 input[type="text"] {
+  flex: 1; /* Make input fill available space */
   padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #007BFF; /* Highlight on focus */
 }
 
 button {
-  padding: 10px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
+  padding: 10px 20px;
+  background-color: #007BFF; /* Primary button color */
+  color: #fff; /* White text */
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Darker on hover */
+}
+
+button:active {
+  transform: scale(0.95); /* Slight "press" effect */
 }
 
 .response {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-left: 5px solid #007bff;
-  word-wrap: break-word;
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-family: "Courier New", monospace; /* Chat-style font */
+  color: #333;
+  overflow-y: auto; /* Scrollable for long content */
+  max-height: 400px; /* Constrain height */
 }
+
+
+
+
+#modelsList {
+  border: 2px solid #007BFF; /* Border color */
+  border-radius: 8px; /* Rounded corners */
+  padding: 15px; /* Inner spacing */
+  margin: 15px 0; /* Outer spacing */
+  background-color: #f9f9f9; /* Light background */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-family: Arial, sans-serif; /* Clean font */
+}
+
+#modelsList ul {
+  list-style-type: none; /* No bullets */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+#modelsList li {
+  padding: 10px; /* Spacing for each item */
+  margin: 5px 0; /* Spacing between items */
+  border-bottom: 1px solid #ddd; /* Divider between items */
+  display: flex; /* Flex layout */
+  justify-content: space-between; /* Spread out content */
+  align-items: center; /* Align vertically */
+}
+
+#modelsList li:last-child {
+  border-bottom: none; /* Remove border for last item */
+}
+
+#modelsList .model-name {
+  font-weight: bold; /* Highlight the model name */
+  color: #333; /* Text color */
+}
+
+#modelsList .model-size {
+  font-size: 0.9em; /* Slightly smaller size for details */
+  color: #666; /* Subtle text color */
+}
+
+
+

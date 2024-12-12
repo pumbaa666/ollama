@@ -48,46 +48,69 @@ app.post(GET_MESSAGE_ENDPOINT, (req, res) => {
         if (code === 0) {
             const response = output.trim();
             console.log("response : " + response);
-            res.json({ response: response });
+            return res.json({ response: response });
         } else {
-            res.status(500).json({ error: `Ollama process failed with code ${code}`, details: errorOutput.trim() });
+            return res.status(500).json({ error: `Ollama process failed with code ${code}`, details: errorOutput.trim() });
         }
     });
 });
 
+const GET_MODELS_ENDPOINT = '/api/listAvailableModels';
+app.get('/api/listAvailableModels', async (req, res) => {
+    console.log("Requesting available models");
+    try {
+        const modelsList = await listAvailableModels();
+        console.log("sending " + modelsList.size + " modelz");
+        return res.json(modelsList);
+    } catch (error) {
+        console.error('Error retrieving models:', error);
+        return res.status(500).json({ error: 'Failed to retrieve models' });
+    }
+});
+
+/**
+ * Retrieves the list of locally installed models using the "ollama list" command.
+ * 
+ * @returns {Promise<Array<{name: string, id: string, size: string, modified: string}>>} 
+ * Resolves with an array of model details or rejects on failure.
+ * 
+ * Each model object contains:
+ * - `name`: Model name (e.g., "raccourci:latest").
+ * - `id`: Unique identifier.
+ * - `size`: Model size (e.g., "2.0 GB").
+ * - `modified`: Last modified time (e.g., "44 hours ago").
+ */
 function listAvailableModels() {
-    const ollamaList = spawn('ollama', ['list']);
+    return new Promise((resolve, reject) => {
+        const child = spawn('ollama', ['list']);
+        let output = '';
 
-    let output = '';
-    ollamaList.stdout.on('data', (data) => {
-        output += data.toString();
-    });
+        child.stdout.on('data', (data) => {
+            output += data.toString();
+        });
 
-    ollamaList.stderr.on('data', (data) => {
-        console.error(`stderr: ${data.toString()}`);
-    });
+        child.stderr.on('data', (err) => {
+            console.error('Error from ollama list:', err.toString());
+            reject(err.toString());
+        });
 
-    ollamaList.on('close', (code) => {
-        if (code !== 0) {
-            console.error(`ollama list process exited with code ${code}`);
-            // return res.status(500).json({ error: 'Failed to retrieve model list.' });
-        }
+        child.on('close', (code) => {
+            if (code === 0) {
+                const models = output
+                    .split('\n')
+                    .filter(line => line.trim() && !line.startsWith('NAME'))
+                    .map(line => {
+                        const [tag, id, size, unit] = line.split(/\s+/);
+                        const [name, version] = tag.split(/:/);
+                        const fullSize = size+""+unit;
 
-        // Parse the output into a JSON-friendly format
-        const models = output
-            .split('\n')
-            .slice(1) // Skip the header
-            .filter(line => line.trim()) // Remove empty lines
-            .map(line => {
-                const [tag, id, size, unit] = line.split(/\s+/);
-                const [name, version] = tag.split(/:/);
-                const fullSize = size+""+unit;
-                
-                return { name, version, tag, id, size, unit, fullSize };
-            });
-
-        // res.json(models);
-        console.log(models)
+                        return { tag, id, size, unit, name, version, fullSize };
+                    });
+                resolve(models);
+            } else {
+                reject(new Error(`ollama list exited with code ${code}`));
+            }
+        });
     });
 }
 
@@ -98,6 +121,5 @@ function cleanExit(exitCode) {
 
 // Start the server
 app.listen(PORT, () => {
-    listAvailableModels();
     console.log("Server is running on http://"+SERVER+":"+PORT);
 });
