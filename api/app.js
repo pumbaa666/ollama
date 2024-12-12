@@ -1,17 +1,19 @@
 const express = require('express');
+const path = require('path');
 const { spawn } = require('child_process');
 
-//let ollamaProcess;
-
 const app = express();
-app.use(express.json());
 
-const PORT = 3000;
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '../view'))); // Serve static files from the "view" directory
+
 const ollamaCommand = 'ollama';
 const ollamaArgs = ['run', 'llama3.2'];
 
+const SERVER = "localhost"
+const PORT = 3000;
 const GET_MESSAGE_ENDPOINT =  '/api/message';
-
+// API endpoint : http://[SERVER]:[PORT][GET_MESSAGE_ENDPOINT] ; http://localhost:3000/api/message
 app.post(GET_MESSAGE_ENDPOINT, (req, res) => {
     console.log("request received on " + GET_MESSAGE_ENDPOINT)
     const { message } = req.body;
@@ -29,17 +31,17 @@ app.post(GET_MESSAGE_ENDPOINT, (req, res) => {
     ollamaProcess.stdin.write(`${message}\n`);
     ollamaProcess.stdin.end();
 
-    // Capture standard output
+    // Capture standard output in a buffer
     ollamaProcess.stdout.on('data', (data) => {
         output += data.toString();
     });
 
-    // Capture standard error
+    // Capture standard error in a buffer
     ollamaProcess.stderr.on('data', (data) => {
         errorOutput += data.toString();
     });
 
-    // Handle process completion
+    // Send the bufferised response
     ollamaProcess.on('close', (code) => {
         if (code === 0) {
             res.json({ response: output.trim() });
@@ -56,5 +58,5 @@ function cleanExit(exitCode) {
 
 // Start the server
 app.listen(PORT, () => {
-    console.log('Server is running on http://localhost:3000');
+    console.log("Server is running on http://"+SERVER+":"+PORT);
 });
