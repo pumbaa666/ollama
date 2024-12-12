@@ -1,7 +1,10 @@
 document.getElementById('messageForm').addEventListener('submit', async function (event) {
   event.preventDefault();
 
-  const message = document.getElementById('messageInput').value;
+  const messageInput = document.getElementById('messageInput');
+  const message = messageInput.value;
+  messageInput.value = "";
+  
   console.log("\n--------------------");
   console.log("received : "+message);
 

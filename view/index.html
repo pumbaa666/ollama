@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pumbaa-KPT</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <h1>Pumbaa-KPT</h1>
+  
   <form id="messageForm">
     <input type="text" id="messageInput" placeholder="Enter your message" required />
     <button type="submit">Send</button>
   </form>
-  <!--form id="messageForm" method="POST" action="/api/message">
-    <label for="messageInput">Message:</label>
-    <input type="text" id="messageInput" name="message" required>
-    <button type="submit">Send</button>
-  </form-->
-  <div id="responseBox" class="response" style="display: none;"></div>
+  
+  <div id="responseBox" class="response" style="display: none; max-height: 600px; overflow-y: auto;"></div>
+
   <script src="script.js"></script>
 </body>
+
 </html>
