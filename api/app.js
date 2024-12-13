@@ -8,22 +8,22 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../view'))); // Serve static files from the "view" directory
 
 const ollamaCommand = 'ollama';
-const ollamaArgs = ['run', 'amical'];
 
 const SERVER = "localhost"
 const PORT = 3000;
 const GET_MESSAGE_ENDPOINT =  '/api/message';
 // API endpoint : http://[SERVER]:[PORT][GET_MESSAGE_ENDPOINT] ; http://localhost:3000/api/message
 app.post(GET_MESSAGE_ENDPOINT, (req, res) => {
-    console.log("\n---------------");
-    console.log("request received on " + GET_MESSAGE_ENDPOINT)
     const { message } = req.body;
-    console.log("message : " + message);
+    let modelName = req.headers['x-model-name'];
 
-    if (!message) {
-        return res.status(400).json({ error: 'Message is required' });
+    if (!modelName) {
+        console.log('No model found in the header, using default');
+        modelName = 'llama3.2';
+        //return res.status(400).json({ error: 'Model name is required in the headers' });
     }
 
+    const ollamaArgs = ['run', modelName];
     const ollamaProcess = spawn(ollamaCommand, ollamaArgs);
 
     let output = '';
@@ -32,7 +32,7 @@ app.post(GET_MESSAGE_ENDPOINT, (req, res) => {
     // Send the message to the Ollama process
     ollamaProcess.stdin.write(`${message}\n`);
     ollamaProcess.stdin.end();
-
+    
     // Capture standard output in a buffer
     ollamaProcess.stdout.on('data', (data) => {
         output += data.toString();
