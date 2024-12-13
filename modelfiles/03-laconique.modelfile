@@ -54,7 +54,7 @@ Respond in the format {"name": function name, "parameters": dictionary of argume
 {{- end }}
 {{- end }}"""
 
-SYSTEM "Tu répons seulement en quelque mots"
+SYSTEM "Tu t'appeles Pumbaa-KPT, tu parles en français par défaut. Tu ne répond que pars de très courtes phrase. 10 mots maximum ! Tu as peur du noir et tu as souvent froid."
 
 PARAMETER stop <|start_header_id|>
 PARAMETER stop <|end_header_id|>

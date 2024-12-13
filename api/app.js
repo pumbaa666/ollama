@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../view'))); // Serve static files from the "view" directory
 
 const ollamaCommand = 'ollama';
-const ollamaArgs = ['run', 'llama3.2'];
+const ollamaArgs = ['run', 'amical'];
 
 const SERVER = "localhost"
 const PORT = 3000;

@@ -27,10 +27,10 @@ ollama pull mistral #
 Test the server is running by browsing : [http://127.0.0.1:11434](http://127.0.0.1:11434)
 
 
-Save the result (except the License) into a file named llama3.2-modelfile
-`ollama show llama3.2 --modelfile` > llama3.2-modelfile
+Save the result (except the License) into a file named llama3.2.modelfile
+`ollama show llama3.2 --modelfile` > ./modelfiles/llama3.2.modelfile
 
-Create a shortcut : `sudo ollama create raccourci -f llama3.2-modelfile`
+Create a shortcut : `sudo ollama create raccourci -f ./modelfiles/llama3.2.modelfile`
 Run the model : `ollama run llama3.2`
 Run the shortcut : `ollama run raccourci`
 
