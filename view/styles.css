@@ -92,11 +92,12 @@ button:active {
   margin: 0; /* Remove default margin */
 }
 
+/* modelsList : horizontal menu */
 #modelsList li {
   padding: 10px; /* Spacing for each item */
   margin: 5px 0; /* Spacing between items */
   border-bottom: 1px solid #ddd; /* Divider between items */
-  display: flex; /* Flex layout */
+  display: inline; /* Horizontal */
   justify-content: space-between; /* Spread out content */
   align-items: center; /* Align vertically */
 }
@@ -115,5 +116,78 @@ button:active {
   color: #666; /* Subtle text color */
 }
 
+#modelsList li.selected {
+  background-color: #007BFF;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+}
 
+#modelsList li:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+#modelsList li.selected:hover {
+  background-color: #0056b3;
+}
+
+#content {
+  float: left;
+  width: 60%;
+}
+
+.code-container {
+  float: right;
+  width: 35%;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-left: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.copy-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.copy-button:hover {
+  background-color: #0056b3;
+}
+
+
+
+
+
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
 

@@ -60,7 +60,7 @@ app.get('/api/listAvailableModels', async (req, res) => {
     console.log("Requesting available models");
     try {
         const modelsList = await listAvailableModels();
-        console.log("sending " + modelsList.size + " modelz");
+        console.log("sending " + modelsList.length + " modelz");
         return res.json(modelsList);
     } catch (error) {
         console.error('Error retrieving models:', error);
@@ -114,6 +114,13 @@ function listAvailableModels() {
     });
 }
 
+
+
+/**
+ * Gracefully exits the server.
+ * 
+ * @param {number} exitCode Exit code.
+ */
 function cleanExit(exitCode) {
     console.log(`Ollama exited with code ${exitCode}`);
     // TODO futurs cleanup

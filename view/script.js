@@ -1,7 +1,6 @@
 // Charge les models installés au démarrage
 document.addEventListener('DOMContentLoaded', () => {
   const modelsList = document.getElementById('modelsList');
-  const modelNameHeading = document.getElementById('modelName');
   let selectedModel = null;
 
   // Fetch available models
@@ -12,21 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
               modelsList.innerHTML = '';
               models.forEach(model => {
                   const listItem = document.createElement('li');
-                  listItem.textContent = model.name + "(" + model.fullSize + ")";
+                  listItem.textContent = model.name + " (" + model.fullSize + ")";
                   listItem.style.cursor = 'pointer';
-                  listItem.addEventListener('click', () => selectModel(model.name));
+                  listItem.addEventListener('click', () => selectModel(listItem, model.name));
                   modelsList.appendChild(listItem);
               });
           })
           .catch(error => console.error('Error fetching models:', error));
   }
 
-  // Select a model
-  function selectModel(modelName) {
+  // Select a model and highlight it
+  function selectModel(listItem, modelName) {
     console.log("selectedModel using : " + modelName);
-    selectedModel = modelName;
-    modelNameHeading.textContent = `Model: ${modelName}`;
-    
+      // Remove highlight from previously selected model
+      const previousSelection = modelsList.querySelector('.selected');
+      if (previousSelection) {
+          previousSelection.classList.remove('selected');
+      }
+
+      // Highlight the selected model
+      listItem.classList.add('selected');
+      selectedModel = modelName;
+
     // Reset chatbox
     responseBox.innerHTML = "";
   }
@@ -56,9 +62,21 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(response => response.json())
       .then(data => {
-          const responseBox = document.getElementById('responseBox');
-          responseBox.style.display = 'block';
-          //responseBox.innerHTML += `<p><strong>Response:</strong> ${data.response}</p>`;
+        const responseBox = document.getElementById('responseBox');
+        const formattedCodeBox = document.getElementById('formattedCode');
+        const codeContent = document.getElementById('codeContent');
+        responseBox.style.display = 'block';
+        
+        // Check if the response contains code (example: wrapped in "```")
+        // and formats it
+        const codeMatch = data.response.match(/```([\s\S]*?)```/);
+        if (codeMatch) {
+            formattedCodeBox.style.display = 'block';
+            codeContent.textContent = codeMatch[1].trim();
+        } else {
+            formattedCodeBox.style.display = 'none';
+        }
+        
         // Calcul le temps de réponse et affiche la réponse dans la textbox
         const time2 = new Date();
         const lag = time2 - time1;
@@ -68,6 +86,26 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(error => console.error('Error sending message:', error));
   });
+  
+  // Copy button functionality
+  document.getElementById('copyCodeButton').addEventListener('click', () => {
+    const codeContent = document.getElementById('codeContent');
+    navigator.clipboard.writeText(codeContent.textContent)
+        .then(() => showNotification('Code copied to clipboard!'))
+        .catch(err => console.error('Failed to copy code:', err));
+  });
+  
+  // Show notification when code is successfully copied into clipboard
+  function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.display = 'block';
+
+    // Hide the notification after 3 seconds
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
 
   // Initial fetch of models
   fetchModels();

@@ -9,25 +9,31 @@
 </head>
 
 <body>
-  <h1>Pumbaa-KPT</h1>
-  <h2 id="modelName">Model: laconique</h2>
-  
-  <div id="menu" style="width: 200px; float: left; margin-right: 20px;">
-    <h3>Available Models</h3>
-    <ul id="modelsList"></ul>
-  </div>
+  <div id="notification" class="notification" style="display: none;"></div>
 
-  <div id="content" style="margin-left: 220px;">
-    <form id="messageForm">
-      <input type="text" id="messageInput" placeholder="Enter your message" required />
-      <button type="submit">Send</button>
-    </form>
-    
-    <div id="responseBox" class="response" style="display: none; max-height: 600px; overflow-y: auto;"></div>
-  </div>
+  <header>
+    <h1>Pumbaa-KPT</h1>
+    <nav id="menu" class="menu">
+      <ul id="modelsList"></ul>
+    </nav>
+  </header>
+
+  <main class="main-container">
+    <div id="content" class="content">
+      <form id="messageForm" class="message-form">
+        <input type="text" id="messageInput" placeholder="Enter your message" required />
+        <button type="submit">Send</button>
+      </form>
+      <div id="responseBox" class="response" style="display: none; max-height: 600px; overflow-y: auto;"></div>
+    </div>
+
+    <div id="formattedCode" class="code-container" style="display: none;">
+      <button id="copyCodeButton" class="copy-button">Copy Code</button>
+      <pre id="codeContent"></pre>
+    </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
-
 
 </html>
