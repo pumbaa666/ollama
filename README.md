@@ -34,6 +34,16 @@ Create a shortcut : `sudo ollama create raccourci -f ./modelfiles/llama3.2.model
 Run the model : `ollama run llama3.2`
 Run the shortcut : `ollama run raccourci`
 
+Add openweb-ui as submodule :
+```
+git submodule add https://github.com/open-webui/open-webui.git
+cd open-webui
+nvm install 20
+nvm use 20
+npm i
+npm run build
+
+```
 
 ## Docker
 Build from Dockerfile `docker build -t pumbaa-kpt-app .`

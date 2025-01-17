@@ -12,7 +12,8 @@ RUN curl -fsSL https://ollama.com/install.sh | sh && \
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the container
-COPY package*.json ./
+COPY api/package*.json ./
+COPY view ./
 
 # Install application dependencies
 RUN npm install
